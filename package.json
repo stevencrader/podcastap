@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "lint": "run-p -cln 'lint:*'",
+    "lint:eslint": "eslint components/ islands/ routes/",
+    "lint:prettier": "prettier --check .",
+    "lint-fix": "run-p -cln 'lint-fix:*'",
+    "lint-fix:other": "prettier --write '**/*.{md,json,yml,eslintrc,config.js}'",
+    "lint-fix:eslint": "npm run lint:eslint -- --fix"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.51.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-airbnb-typescript-base": "^4.0.2",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsdoc": "^46.10.1",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-sonarjs": "^0.21.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.1.1"
+  }
+}
