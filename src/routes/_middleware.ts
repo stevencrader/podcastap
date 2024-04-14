@@ -38,7 +38,7 @@ export async function handler(req: Request, ctx: FreshContext) {
 
   if (activeServer === undefined) {
     if (!isAPIOrAuth(ctx)) {
-      console.log("Getting server urls, no active server", req.url)
+      // console.log("Getting server urls, no active server", req.url)
       await getServerUrlsUpdateState(ctx)
     }
     return ctx.next()
@@ -58,7 +58,7 @@ export async function handler(req: Request, ctx: FreshContext) {
   } as StateData
 
   if (!signedIn || ctx.url.pathname.startsWith("/legal")) {
-    console.log("Getting server urls", req.url)
+    // console.log("Getting server urls", req.url)
     await getServerUrlsUpdateState(ctx)
   }
 

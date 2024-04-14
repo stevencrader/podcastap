@@ -1,4 +1,3 @@
-import { getCookieName, isHttps } from "$deno_kv_oauth/lib/_http.ts"
 import { handleCallback, Tokens } from "$deno_kv_oauth/mod.ts"
 import { FreshContext, Handlers, STATUS_CODE } from "$fresh/server.ts"
 import { setCookie } from "@std/http/cookie"
@@ -40,8 +39,8 @@ export const handler: Handlers = {
 
     if (tokens) {
       const token = tokens.accessToken
-      const cookieName = getCookieName(TOKEN_COOKIE_NAME, isHttps(req.url))
-      const cookie = buildCookie(ctx.url.toString(), cookieName, token)
+      // don't call getCookieName to get full cookie name since it is called by buildCookie
+      const cookie = buildCookie(ctx.url.toString(), TOKEN_COOKIE_NAME, token)
       setCookie(response.headers, cookie)
     }
 
