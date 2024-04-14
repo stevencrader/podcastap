@@ -181,18 +181,21 @@ async function makeRequest(
 }
 
 export function getFeedFromID(pid: number | string, originalFeed?: PIResponseFeed): Promise<RequestResult> {
+  // noinspection SpellCheckingInspection
   return makeRequest("/podcasts/byfeedid", {
     id: pid.toString()
   }, originalFeed)
 }
 
 export function getFeedFromURL(url: string, originalFeed?: PIResponseFeed): Promise<RequestResult> {
+  // noinspection SpellCheckingInspection
   return makeRequest("/podcasts/byfeedurl", {
     url
   }, originalFeed)
 }
 
 export function getFeedFromGUID(guid: string, originalFeed?: PIResponseFeed): Promise<RequestResult> {
+  // noinspection SpellCheckingInspection
   return makeRequest("/podcasts/byguid", {
     guid
   }, originalFeed)
@@ -204,6 +207,7 @@ export function searchByTitle(
   max: number = 10,
   multiple = false
 ): Promise<RequestResult> {
+  // noinspection SpellCheckingInspection
   return makeRequest(
     "/search/bytitle",
     {
@@ -221,6 +225,7 @@ export function searchByTerm(
   max: number = 10,
   multiple = false
 ): Promise<RequestResult> {
+  // noinspection SpellCheckingInspection
   return makeRequest(
     "/search/byterm",
     {
@@ -238,6 +243,7 @@ export function searchMusicByTerm(
   max: number = 10,
   multiple = false
 ): Promise<RequestResult> {
+  // noinspection SpellCheckingInspection
   return makeRequest(
     "/search/music/byterm",
     {

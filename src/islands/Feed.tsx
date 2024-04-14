@@ -40,7 +40,7 @@ function FeedImage(props: {
 }
 
 export default function Feed(props: FeedProps): JSX.Element {
-  const { lookupResult, activeServer } = props
+  const { lookupResult, activeServer, authenticated } = props
   const copyMessage = useSignal("")
   const relationshipSignal: Signal<Relationship | undefined> = useSignal(lookupResult?.apData?.relationship)
   const [imageUrl, setImageUrl] = useState<string>("/noimage.jpg")
@@ -83,7 +83,7 @@ export default function Feed(props: FeedProps): JSX.Element {
         .then(() => {
           return "Text copied"
         })
-        .catch((reason) => {
+        .catch(() => {
           return "Unable to copy text"
         })
     } else {
@@ -193,29 +193,36 @@ export default function Feed(props: FeedProps): JSX.Element {
 
         <ul className="flex flex-row gap-2 mt-auto pt-1 items-center ">
           {/* buttons */}
-          {lookupResult.feed?.id
-            ? (
-              <div class="flex gap-2 items-center ">
-                <Button
-                  title="Copy AP User to clipboard"
-                  onClick={copyAPUser}
-                  disabled={copyMessage.value !== ""}
-                >
-                  <span className={copyMessage.value === "" ? "" : "hidden"}>Copy AP User</span>
-                  <span className={copyMessage.value === "" ? "hidden" : ""}>{copyMessage.value}</span>
-                </Button>
-              </div>
-            )
-            : <></>}
+          {
+            lookupResult.feed?.id
+              ? (
+                <div class="flex gap-2 items-center ">
+                  <Button
+                    title="Copy AP User to clipboard"
+                    onClick={copyAPUser}
+                    disabled={copyMessage.value !== ""}
+                  >
+                    <span className={copyMessage.value === "" ? "" : "hidden"}>Copy AP User</span>
+                    <span className={copyMessage.value === "" ? "hidden" : ""}>{copyMessage.value}</span>
+                  </Button>
+                </div>
+              )
+              : <></>
+          }
 
-          <FollowUnfollow
-            feedId={lookupResult?.feed?.id?.toString() || ""}
-            accountId={lookupResult.apData?.account?.id || relationshipSignal.value?.id}
-            relationship={relationshipSignal.value}
-            onRelationshipChange={(relationship) => {
-              relationshipSignal.value = relationship
-            }}
-          />
+          {
+            activeServer && authenticated ?
+              <FollowUnfollow
+                feedId={lookupResult?.feed?.id?.toString() || ""}
+                accountId={lookupResult.apData?.account?.id || relationshipSignal.value?.id}
+                relationship={relationshipSignal.value}
+                onRelationshipChange={(relationship) => {
+                  relationshipSignal.value = relationship
+                }}
+              />
+              :
+              <></>
+          }
         </ul>
       </div>
     </div>

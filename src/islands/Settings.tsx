@@ -3,7 +3,7 @@ import { JSX } from "preact"
 import { Button } from "../components/Button.tsx"
 import { Account } from "../types/MastodonAPI.ts"
 import { PIResponseFeed } from "../types/podcastindex.ts"
-import { deleteFeeds, deleteServerUrls, getFeeds, getServerUrls } from "../utils/localStorageManager.ts"
+import { deleteFeeds, deleteServerUrls, getFeeds, getLocalServerUrls } from "../utils/localStorageManager.ts"
 import DarkModeControl from "./DarkModeControl.tsx"
 import OPMLWriter from "./OPMLWriter.tsx"
 import RedirectManager from "./RedirectManager.tsx"
@@ -17,7 +17,7 @@ interface SettingsProps {
 export default function Settings(props: SettingsProps): JSX.Element {
   const { redirect, activeServer, user } = props
   const feeds: Signal<PIResponseFeed[]> = useSignal(getFeeds())
-  const localServerUrls: Signal<string[]> = useSignal(getServerUrls())
+  const localServerUrls: Signal<string[]> = useSignal(getLocalServerUrls())
   return (
     <>
       <div className="flex flex-row gap-2 items-center p-2">
@@ -43,7 +43,7 @@ export default function Settings(props: SettingsProps): JSX.Element {
           onClick={() => {
             const doDelete = deleteServerUrls()
             if (doDelete) {
-              localServerUrls.value = getServerUrls()
+              localServerUrls.value = getLocalServerUrls()
             }
           }}
         >

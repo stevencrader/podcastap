@@ -30,6 +30,7 @@ async function getServerData(server: string): Promise<DBServer | null> {
 
 export async function getOAuthConfig(server: string): Promise<OAuth2ClientConfig> {
   let updateServerData = false
+  console.log("Getting server", server)
   let serverData = await getServerData(server)
   if (serverData === null) {
     throw new Error(`Unable to get server data for server ${server}`)

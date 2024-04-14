@@ -42,26 +42,26 @@ async function updateDB<T>(
   return res.ok
 }
 
-async function deleteDB<T>(
-  key: Deno.KvKeyPart[]
-): Promise<boolean> {
-  // Retry the transaction until it succeeds.
-  let res: Deno.KvCommitResult | Deno.KvCommitError = { ok: false }
-  let attempt = 0
-  while (!res.ok && attempt++ < MAX_ATTEMPTS) {
-    const entry = await kv.get<T>(key)
-    const current = entry.value
-    if (current === null) {
-      return true
-    }
-
-    res = await kv.atomic()
-      .check(entry)
-      .delete(key)
-      .commit()
-  }
-  return res.ok
-}
+// async function deleteDB<T>(
+//   key: Deno.KvKeyPart[]
+// ): Promise<boolean> {
+//   // Retry the transaction until it succeeds.
+//   let res: Deno.KvCommitResult | Deno.KvCommitError = { ok: false }
+//   let attempt = 0
+//   while (!res.ok && attempt++ < MAX_ATTEMPTS) {
+//     const entry = await kv.get<T>(key)
+//     const current = entry.value
+//     if (current === null) {
+//       return true
+//     }
+//
+//     res = await kv.atomic()
+//       .check(entry)
+//       .delete(key)
+//       .commit()
+//   }
+//   return res.ok
+// }
 
 // region Server
 
@@ -85,24 +85,24 @@ function getServerKeyAndURL(url: string): {
   }
 }
 
-async function initServer(url: string): Promise<boolean> {
-  const { key, serverUrl } = getServerKeyAndURL(url)
-  if (key === undefined || serverUrl === undefined) {
-    return false
-  }
-
-  return await updateDB<DBServer>(
-    key,
-    (): DBServer => {
-      return {
-        url: serverUrl.origin,
-        created: Date.now(),
-        updated: Date.now()
-      }
-    },
-    true
-  )
-}
+// async function initServer(url: string): Promise<boolean> {
+//   const { key, serverUrl } = getServerKeyAndURL(url)
+//   if (key === undefined || serverUrl === undefined) {
+//     return false
+//   }
+//
+//   return await updateDB<DBServer>(
+//     key,
+//     (): DBServer => {
+//       return {
+//         url: serverUrl.origin,
+//         created: Date.now(),
+//         updated: Date.now()
+//       }
+//     },
+//     true
+//   )
+// }
 
 export async function addServerInfo(serverData: DBServer): Promise<boolean> {
   const { key, serverUrl } = getServerKeyAndURL(serverData.url)
@@ -165,15 +165,14 @@ export async function getServerUrls(): Promise<string[]> {
   return validServers.map((server) => server.url)
 }
 
-// deno-lint-ignore no-unused-vars
-async function deleteServer(url: string): Promise<boolean> {
-  const { key, serverUrl } = getServerKeyAndURL(url)
-  if (key === undefined || serverUrl === undefined) {
-    return false
-  }
-
-  return await deleteDB(key)
-}
+// async function deleteServer(url: string): Promise<boolean> {
+//   const { key, serverUrl } = getServerKeyAndURL(url)
+//   if (key === undefined || serverUrl === undefined) {
+//     return false
+//   }
+//
+//   return await deleteDB(key)
+// }
 
 // endregion Server
 
@@ -188,9 +187,10 @@ export async function initDB() {
   //   await deleteServer(server.url)
   // }
 
-  await Promise.all<boolean>(AP_SERVERS_PUBLIC.map((server) => {
-    return initServer(server)
-  }))
+  // only needed when adding new default servers
+  // await Promise.all<boolean>(AP_SERVERS_PUBLIC.map((server) => {
+  //   return initServer(server)
+  // }))
 
   // console.log("servers in db", await getServers())
 }

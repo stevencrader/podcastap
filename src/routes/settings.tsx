@@ -8,7 +8,7 @@ import { getRedirect } from "./feed/[id].tsx"
 
 // deno-lint-ignore require-await
 export default async function SettingsPage(req: Request, ctx: FreshContext): Promise<JSX.Element> {
-  const { user, signedIn, activeServer } = ctx.state.data as StateData
+  const { user, activeServer } = ctx.state.data as StateData
   const title = "Settings"
   const canonical = getCanonical("settings")
   const pageTitle = getTitle(title)

@@ -38,13 +38,6 @@ export interface Relationship {
   blocked_by: boolean
   blocking: boolean
   domain_blocking: boolean
-  // endorsed: boolean,
-  // followed_by: boolean,
   muting: boolean
-  // muting_notifications: boolean,
-  // note: string,
-  // notifying: boolean,
   requested: boolean
-  // showing_reblogs: boolean,
-  // subscribing: boolean,
 }

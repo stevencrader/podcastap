@@ -63,7 +63,7 @@ export const handler: Handlers = {
 // deno-lint-ignore require-await
 export default async function FeedPage(req: Request, ctx: FreshContext): Promise<JSX.Element> {
   const stateData = ctx.state.data as StateData
-  const { signedIn, servers, searchResults, activeServer } = stateData
+  const { signedIn, searchResults, activeServer } = stateData
   const doRedirect = getRedirect(req)
   const disableRedirect = ctx.url.searchParams.get("no_redirect") === "true"
 

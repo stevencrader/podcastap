@@ -5,7 +5,7 @@ import { Button } from "../components/Button.tsx"
 import { Username } from "../components/Username.tsx"
 import { Account } from "../types/MastodonAPI.ts"
 import { StateData } from "../types/StateData.ts"
-import { getServerUrls, setTempServerUrl } from "../utils/localStorageManager.ts"
+import { getLocalServerUrls, setTempServerUrl } from "../utils/localStorageManager.ts"
 import { getURL, removeTrailingSlash } from "../utils/url.ts"
 import CrossXIcon from "./icons/CrossXIcon.tsx"
 
@@ -48,7 +48,7 @@ export default function SelectServer(props: SelectServerProps) {
     user = stateData.user
   }
   const defaultServers = [...servers]
-  const localServers = getServerUrls()
+  const localServers = getLocalServerUrls()
   localServers.forEach((localServer) => {
     if (!servers.includes(localServer)) {
       servers.push(localServer)

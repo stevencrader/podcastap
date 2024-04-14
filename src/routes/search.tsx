@@ -40,7 +40,7 @@ export const handler: Handlers = {
 
       if (result.success && result.feeds) {
         // console.log("feeds", result)
-        const { signedIn, activeServer, user } = ctx.state.data as StateData
+        const { signedIn, activeServer } = ctx.state.data as StateData
         const oauthToken = getToken(req)
 
         const lookupResults = await lookup(result.feeds, signedIn, activeServer, oauthToken)
@@ -57,7 +57,7 @@ export const handler: Handlers = {
 }
 
 export default function SearchPage(props: PageProps): JSX.Element {
-  const { user, signedIn, activeServer, searchResults } = props.state.data as StateData
+  const { signedIn, activeServer, searchResults } = props.state.data as StateData
   const searchValue = props.url.searchParams.get("q") || ""
   const searchType = getSearchType(props.url.searchParams.get("type"))
 

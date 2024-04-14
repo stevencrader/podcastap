@@ -9,11 +9,9 @@ export async function handler(req: Request, ctx: FreshContext) {
     return ctx.next()
   }
 
-  const servers = await getServerUrls()
   const activeServer = getActiveServer(req)
   ctx.state.data = {
     ...(ctx.state.data as StateData),
-    servers,
     activeServer
   } as StateData
 
@@ -37,11 +35,22 @@ export async function handler(req: Request, ctx: FreshContext) {
   }
 
   const validUser = await verifyUser(req, activeServer)
+  const signedIn = validUser.user !== undefined
   ctx.state.data = {
     ...(ctx.state.data as StateData),
     user: validUser.user,
-    signedIn: validUser.user !== undefined
+    signedIn
   } as StateData
+
+  if (!signedIn || ctx.url.pathname.startsWith("/legal")) {
+    console.log("Getting server urls", req.url)
+    const servers = await getServerUrls()
+    ctx.state.data = {
+      ...(ctx.state.data as StateData),
+      servers
+    } as StateData
+  }
+
   const response = await ctx.next()
   const { ok } = response
   if (ok) {

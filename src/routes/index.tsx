@@ -4,7 +4,7 @@ import SelectServer from "../islands/SelectServer.tsx"
 import { StateData } from "../types/StateData.ts"
 
 // deno-lint-ignore require-await
-export default async function HomePage(req_: Request, ctx: FreshContext): Promise<JSX.Element> {
+export default async function HomePage(_req: Request, ctx: FreshContext): Promise<JSX.Element> {
   const stateData = ctx.state.data as StateData
 
   return (

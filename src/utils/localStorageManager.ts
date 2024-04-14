@@ -104,7 +104,7 @@ export function deleteFeeds(prompt = true, temp = false): boolean {
   return doDelete
 }
 
-export function getServerUrls(): string[] {
+export function getLocalServerUrls(): string[] {
   if (!IS_BROWSER) return []
 
   const currentServerUrlsString = localStorage.getItem(SERVER_URLS)
@@ -135,7 +135,7 @@ export function setTempServerUrl(url: string = ""): void {
 export function updateServerUrls(urls: string[]) {
   if (!IS_BROWSER) return
 
-  const currentServerUrls = getServerUrls()
+  const currentServerUrls = getLocalServerUrls()
   urls.forEach((url) => {
     if (!currentServerUrls.includes(url)) {
       currentServerUrls.push(url)

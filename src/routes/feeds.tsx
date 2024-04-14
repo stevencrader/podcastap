@@ -6,7 +6,7 @@ import { StateData } from "../types/StateData.ts"
 import { getCanonical, getTitle } from "../utils/utils.ts"
 
 export default function FeedsPage(props: PageProps): JSX.Element {
-  const { user, signedIn, activeServer } = props.state.data as StateData
+  const { signedIn, activeServer } = props.state.data as StateData
   const title = "Feeds"
   const canonical = getCanonical("feeds")
   const pageTitle = getTitle(title)

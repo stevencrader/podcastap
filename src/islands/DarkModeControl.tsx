@@ -64,7 +64,7 @@ export default function DarkModeControl(props: DarkModeControlProps) {
         className={className}
       >
         {ThemeOption.map((option) => {
-          let selected = false
+          let selected
           if (isAuto.value) {
             selected = option === "auto"
           } else {
@@ -86,7 +86,7 @@ export default function DarkModeControl(props: DarkModeControlProps) {
   return (
     <div
       className={`cursor-pointer p-1 block fixed bottom-3 right-3 rounded-full bg-slate-600 text-pink-400 z-50 ${className}`}
-      onClick={(e) => {
+      onClick={() => {
         isAuto.value = false
         setThemeClass(theme.value !== "dark")
       }}

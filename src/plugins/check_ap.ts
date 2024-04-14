@@ -26,6 +26,7 @@ interface NodeInfoDetails {
 }
 
 async function getNodeInfo(url: string): Promise<string | null> {
+  // noinspection SpellCheckingInspection
   const nodeInfoURL = new URL("/.well-known/nodeinfo", url)
 
   const response = await fetch(nodeInfoURL, {

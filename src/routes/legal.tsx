@@ -1,6 +1,7 @@
 import { Head } from "$fresh/runtime.ts"
+import { PageProps } from "$fresh/server.ts"
 import { JSX } from "preact"
-import { getServerUrls } from "../plugins/db.ts"
+import { StateData } from "../types/StateData.ts"
 import { getCanonical, getTitle } from "../utils/utils.ts"
 
 interface DataInfo {
@@ -8,20 +9,12 @@ interface DataInfo {
   description: string
 }
 
-const servers = await getServerUrls()
-const serversListHTML = [`<ul class="list-disc ml-8">`]
-servers.sort().forEach((server) =>
-  serversListHTML.push(`<li><a href="${server}" target="_blank" rel="nofollow">${server}</a></li>`)
-)
-serversListHTML.push("</ul>")
-
+const SERVER_LIST_PLACEHOLDER = "SERVER_LIST_HERE"
 const DATABASE_DATA: DataInfo[] = [
   {
     name: "Server URL",
     description:
-      `The URL of the instance used to sign in to the site. All others are stored in the user's browser (see Local Storage). Only the following are shown by default: ${
-        serversListHTML.join("")
-      }`
+      `The URL of the instance used to sign in to the site. All others are stored in the user's browser (see Local Storage). Only the following are shown by default: ${SERVER_LIST_PLACEHOLDER}`
   },
   {
     name: "Server Type",
@@ -95,11 +88,26 @@ function DataList(props: { dataList: DataInfo[] }): JSX.Element {
   )
 }
 
-export default function TermsPage(): JSX.Element {
+export default function TermsPage(props: PageProps): JSX.Element {
+  const { servers } = props.state.data as StateData
   const title = "Legal"
   const canonical = getCanonical("legal")
   const pageTitle = getTitle(title)
   const description = ""
+
+
+  const serversListHTML = [`<ul class="list-disc ml-8">`]
+  servers.sort().forEach((server) =>
+    serversListHTML.push(`<li><a href="${server}" target="_blank" rel="nofollow">${server}</a></li>`)
+  )
+  serversListHTML.push("</ul>")
+  DATABASE_DATA.forEach((data) => {
+    if (data.description.includes(SERVER_LIST_PLACEHOLDER)) {
+      data.description = data.description.replaceAll(SERVER_LIST_PLACEHOLDER, serversListHTML.join(""))
+    }
+    return data
+  })
+
   return (
     <section className="p-2 space-y-2 md:p-4 md:space-y-4">
       <Head>
