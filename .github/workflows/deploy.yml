@@ -36,5 +36,5 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "podcastap"
-          entrypoint: "src/main.ts"
+          entrypoint: "main.ts"
           root: "src"
