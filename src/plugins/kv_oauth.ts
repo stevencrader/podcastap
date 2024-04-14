@@ -1,5 +1,5 @@
 import { COOKIE_BASE, getCookieName, isHttps, OAUTH_COOKIE_NAME, SITE_COOKIE_NAME } from "$deno_kv_oauth/lib/_http.ts"
-import { OAuth2ClientConfig } from "$deno_kv_oauth/mod.ts"
+import { getSessionId, OAuth2ClientConfig } from "$deno_kv_oauth/mod.ts"
 import { Cookie, deleteCookie, getCookies } from "@std/http/cookie"
 import { Account } from "../types/MastodonAPI.ts"
 import { getURL } from "../utils/url.ts"
@@ -96,11 +96,13 @@ export async function verifyUser(req: Request, server: string): Promise<VerifyUs
 
   const headers = new Headers()
 
-  deleteCookie(headers, SITE_COOKIE_NAME)
+  const cookieName = getCookieName(SITE_COOKIE_NAME, isHttps(req.url))
+  deleteCookie(headers, cookieName)
 
-  const sessionId = cookies[SITE_COOKIE_NAME] // site-session
+  const sessionId = await getSessionId(req)
   if (sessionId === undefined) {
-    deleteCookie(headers, OAUTH_COOKIE_NAME)
+    const cookieName = getCookieName(OAUTH_COOKIE_NAME, isHttps(req.url))
+    deleteCookie(headers, cookieName)
     return { success: false, headers, user: undefined }
   }
 

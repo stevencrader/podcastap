@@ -1,3 +1,4 @@
+import { getCookieName, isHttps } from "$deno_kv_oauth/lib/_http.ts"
 import { STATUS_CODE, StatusCode } from "@std/http"
 import { getCookies } from "@std/http/cookie"
 import LinkHeader from "http-link-header"
@@ -32,7 +33,8 @@ export async function createApp(serverData: DBServer, redirectUri: string, scope
 
 export function getToken(req: Request): string | undefined {
   const cookies = getCookies(req.headers)
-  return cookies[TOKEN_COOKIE_NAME]
+  const cookieName = getCookieName(TOKEN_COOKIE_NAME, isHttps(req.url))
+  return cookies[cookieName]
 }
 
 async function runAPI(

@@ -1,3 +1,4 @@
+import { getCookieName, isHttps } from "$deno_kv_oauth/lib/_http.ts"
 import { signOut } from "$deno_kv_oauth/mod.ts"
 import { FreshContext, Handlers, STATUS_CODE } from "$fresh/server.ts"
 import { deleteCookie } from "https://deno.land/std@0.213.0/http/cookie.ts"
@@ -27,7 +28,8 @@ export const handler: Handlers = {
 
     const response = await signOut(req)
     if (oauthToken) {
-      deleteCookie(response.headers, TOKEN_COOKIE_NAME)
+      const cookieName = getCookieName(TOKEN_COOKIE_NAME, isHttps(req.url))
+      deleteCookie(response.headers, cookieName)
     }
     return response
   }
