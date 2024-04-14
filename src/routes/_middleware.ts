@@ -3,6 +3,27 @@ import { getServerUrls } from "../plugins/db.ts"
 import { getActiveServer, verifyUser } from "../plugins/kv_oauth.ts"
 import { StateData } from "../types/StateData.ts"
 
+function isAPIOrAuth(ctx: FreshContext): boolean {
+  return (
+      ctx.url.pathname.startsWith("/auth") ||
+      (
+        ctx.url.pathname.startsWith("/api") &&
+        !ctx.url.pathname.startsWith("/api/mastodon") &&
+        !ctx.url.pathname.startsWith("/api/lookup")
+      )
+    ) &&
+    ctx.destination !== "notFound"
+}
+
+async function getServerUrlsUpdateState(ctx: FreshContext) {
+  const servers = await getServerUrls()
+  ctx.state.data = {
+    ...(ctx.state.data as StateData),
+    servers
+  } as StateData
+}
+
+
 // noinspection JSUnusedGlobalSymbols
 export async function handler(req: Request, ctx: FreshContext) {
   if (ctx.destination === "internal" || ctx.destination === "static") {
@@ -16,21 +37,15 @@ export async function handler(req: Request, ctx: FreshContext) {
   } as StateData
 
   if (activeServer === undefined) {
+    if (!isAPIOrAuth(ctx)) {
+      console.log("Getting server urls, no active server", req.url)
+      await getServerUrlsUpdateState(ctx)
+    }
     return ctx.next()
   }
 
   // don't get user info for api and auth pages
-  if (
-    (
-      ctx.url.pathname.startsWith("/auth") ||
-      (
-        ctx.url.pathname.startsWith("/api") &&
-        !ctx.url.pathname.startsWith("/api/mastodon") &&
-        !ctx.url.pathname.startsWith("/api/lookup")
-      )
-    ) &&
-    ctx.destination !== "notFound"
-  ) {
+  if (isAPIOrAuth(ctx)) {
     return ctx.next()
   }
 
@@ -44,11 +59,7 @@ export async function handler(req: Request, ctx: FreshContext) {
 
   if (!signedIn || ctx.url.pathname.startsWith("/legal")) {
     console.log("Getting server urls", req.url)
-    const servers = await getServerUrls()
-    ctx.state.data = {
-      ...(ctx.state.data as StateData),
-      servers
-    } as StateData
+    await getServerUrlsUpdateState(ctx)
   }
 
   const response = await ctx.next()
