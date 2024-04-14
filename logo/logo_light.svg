@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        version="1.1"
+        id="svg9"
+        sodipodi:docname="logo.svg"
+        inkscape:export-filename="logo_96.png"
+        inkscape:export-xdpi="384"
+        inkscape:export-ydpi="384"
+        inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns="http://www.w3.org/2000/svg"
+>
+    <defs
+            id="defs9"/>
+    <sodipodi:namedview
+            id="namedview9"
+            pagecolor="#ffffff"
+            bordercolor="#000000"
+            borderopacity="0.25"
+            inkscape:showpageshadow="2"
+            inkscape:pageopacity="0.0"
+            inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1"
+            inkscape:zoom="33.791667"
+            inkscape:cx="12"
+            inkscape:cy="12"
+            inkscape:window-width="1920"
+            inkscape:window-height="1011"
+            inkscape:window-x="0"
+            inkscape:window-y="0"
+            inkscape:window-maximized="1"
+            inkscape:current-layer="svg9"/>
+    <path
+            d="M12 4.879a1.784 1.784 0 0 0-1.785 1.785v10.672A1.784 1.784 0 0 0 12 19.12a1.784 1.784 0 0 0 1.785-1.785V6.664A1.784 1.784 0 0 0 12 4.88Zm.002 1.316a.401.401 0 0 1 .4.402v10.387a.401.401 0 0 1-.4.402.401.401 0 0 1-.402-.402V6.597a.401.401 0 0 1 .402-.402z"
+            style="color:#000;display:inline;fill:#f8fafc;stroke-linecap:round;fill-opacity:1"
+            id="path1"/>
+    <g
+            style="stroke:#f8fafc;stroke-linecap:round;stroke-width:1.3;fill:none;stroke-opacity:1"
+            id="g9">
+        <path
+                d="M17.705 15.36V8.74"
+                id="path2"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M15.395 15.956V9.093"
+                id="path3"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M19.748 13.551v-2.647"
+                id="path4"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M19.862 12.03h1.566"
+                id="path5"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M6.271 15.36V8.74"
+                id="path6"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M8.582 15.956V9.093"
+                id="path7"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M4.229 13.551v-2.647"
+                id="path8"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+        <path
+                d="M4.115 12.03H2.549"
+                id="path9"
+                style="fill:none;stroke:#f8fafc;stroke-opacity:1"/>
+    </g>
+</svg>

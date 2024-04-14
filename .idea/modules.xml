@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/opml2ap.iml" filepath="$PROJECT_DIR$/.idea/opml2ap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/podcastap.iml" filepath="$PROJECT_DIR$/.idea/podcastap.iml" />
     </modules>
   </component>
 </project>
