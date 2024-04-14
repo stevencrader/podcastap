@@ -1,5 +1,5 @@
 export function getTitle(prefix = ""): string {
-  const base = "OPML 2 Activity Pub (AP)"
+  const base = "Podcast AP"
   if (prefix) {
     return `${prefix} | ${base}`
   }

@@ -49,7 +49,7 @@ export default function AboutPage(): JSX.Element {
       </Head>
       <h1>{title}</h1>
       <p>
-        {"OPML 2 Activity Pub uses the "}
+        {"PodcastAP uses the "}
         <a href="https://podcastindex.org" target="_blank">PodcastIndex.org</a>
         {" API, the "}
         <a href="https://docs.joinmastodon.org/api/" target="_blank">Mastodon API</a>

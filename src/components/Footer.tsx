@@ -30,7 +30,7 @@ export default function Footer(): JSX.Element {
           })}
         </nav>
         <p className="text-xs text-slate-600">
-          © {new Date().getFullYear()} OPML 2 Activity Pub
+          © {new Date().getFullYear()} PodcastAP
         </p>
       </div>
     </footer>
