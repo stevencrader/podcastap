@@ -99,8 +99,8 @@ export default function Feed(props: FeedProps): JSX.Element {
   }
 
   return (
-    <div className="border border-zinc-800 container flex flex-col md:flex-row p-2 gap-2">
-      <div class="w-24 md:w-48 self-center">
+    <div className="border border-zinc-800 flex flex-col md:flex-row p-2 gap-2">
+      <div class="w-24 md:w-48 self-center grow-0">
         {lookupResult.feed.link === ""
           ? <FeedImage imageUrl={imageUrl} title={lookupResult.feed.title} />
           : (
@@ -110,7 +110,7 @@ export default function Feed(props: FeedProps): JSX.Element {
           )}
       </div>
 
-      <div class="grow flex flex-col">
+      <div class="grow flex flex-col overflow-hidden text-ellipsis">
         <h3>
           {lookupResult.feed.link === "" ? lookupResult.feed.title : (
             <a
@@ -187,7 +187,7 @@ export default function Feed(props: FeedProps): JSX.Element {
 
         {
           lookupResult.feed.description ?
-            <p className="mt-1 break-keep">{lookupResult.feed.description.replaceAll(" ", " ")}</p>
+            <p className="mt-1 text-ellipsis overflow-hidden">{lookupResult.feed.description.replaceAll(" ", " ")}</p>
             : <></>
         }
 

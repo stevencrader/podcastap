@@ -9,7 +9,7 @@ export default async function HomePage(_req: Request, ctx: FreshContext): Promis
 
   return (
     <section className="flex-1 flex flex-col items-center justify-center">
-      <div className="container flex flex-col items-center justify-center space-y-4 text-center px-4">
+      <div className="flex flex-col items-center justify-center space-y-4 text-center px-4">
         <h1 className="text-4xl tracking-tighter md:text-6xl">
           Follow Podcasts and Music feeds on the Fediverse
         </h1>
