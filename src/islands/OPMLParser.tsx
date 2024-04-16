@@ -83,7 +83,9 @@ function fileLoaded(event: ProgressEvent): PIResponseFeed[] {
 }
 
 function validFileType(file: File): boolean {
-  return OPML_FILE_TYPES.includes(file.type.toLowerCase())
+  // empty type check added to resolve some OPML files being identified with no file type
+  // Ex: Podcast Guru imported from Android
+  return OPML_FILE_TYPES.includes(file.type.toLowerCase()) || file.type === ""
 }
 
 export default function OPMLParser(file: File): Promise<PIResponseFeed[]> {
