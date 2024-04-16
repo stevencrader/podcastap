@@ -159,10 +159,13 @@ async function getServers(): Promise<DBServer[]> {
   return servers
 }
 
-export async function getServerUrls(): Promise<string[]> {
-  const servers = await getServers()
-  const validServers = servers.filter((server) => AP_SERVERS_PUBLIC.includes(server.url))
-  return validServers.map((server) => server.url)
+export async function getServerUrls(server = false): Promise<string[]> {
+  if (server) {
+    const servers = await getServers()
+    const validServers = servers.filter((server) => AP_SERVERS_PUBLIC.includes(server.url))
+    return validServers.map((server) => server.url)
+  }
+  return [...AP_SERVERS_PUBLIC]
 }
 
 // async function deleteServer(url: string): Promise<boolean> {
@@ -176,7 +179,7 @@ export async function getServerUrls(): Promise<string[]> {
 
 // endregion Server
 
-const AP_SERVERS_PUBLIC = [
+export const AP_SERVERS_PUBLIC = [
   "https://podcastindex.social",
   "https://mastodon.social",
   "https://noauthority.social"

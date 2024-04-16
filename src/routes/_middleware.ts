@@ -16,7 +16,7 @@ function isAPIOrAuth(ctx: FreshContext): boolean {
 }
 
 async function getServerUrlsUpdateState(ctx: FreshContext) {
-  const servers = await getServerUrls()
+  const servers = await getServerUrls(false)
   ctx.state.data = {
     ...(ctx.state.data as StateData),
     servers
