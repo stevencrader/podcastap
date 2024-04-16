@@ -52,7 +52,7 @@ export default function NavigationBar(): JSX.Element {
               href={item.href}
               class="aria-current-page:font-bold text-slate-800 flex flex-row gap-1 items-center dark:text-slate-50 text-sm md:text-base"
             >
-              <span className="hidden md:block">{item.icon ? item.icon : ""}</span>
+              <span className="hidden lg:block">{item.icon ? item.icon : ""}</span>
               <span>{item.title}</span>
             </a>
           </li>

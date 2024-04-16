@@ -5,7 +5,7 @@ export default function PodcastAPIcon() {
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      className="h-10 w-10 md:h-16 md:w-16"
+      className="h-10 w-10 md:h-12 md:w-12 lg:h-16 lg:w-16"
     >
       <path
         fill="currentColor" strokeWidth={0.5}
