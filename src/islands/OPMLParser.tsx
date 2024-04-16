@@ -20,11 +20,32 @@ function getFeeds(node: Node): PIResponseFeed[] {
   node.children.forEach((childNode: Node) => {
     const attributes = childNode.attr as OPMLAttributes
     const { title, text, xmlUrl, feedGuid } = attributes
-    const useTitle = text || title
 
-    if (xmlUrl && useTitle) {
+    const possibleTitle: string[] = []
+    if (text !== undefined && typeof text === "string" && text !== "") {
+      possibleTitle.push(text)
+    } else if (title !== undefined && typeof title === "string" && title !== "") {
+      possibleTitle.push(title)
+    }
+    if (possibleTitle.length > 0) {
+      const useTitle = possibleTitle[0]
+
+      if (xmlUrl && useTitle) {
+        const feed: PIResponseFeed = {
+          title: unescapeEntity(useTitle || ""),
+          url: unescapeEntity(xmlUrl || ""),
+          originalUrl: unescapeEntity(xmlUrl || ""),
+          fromIndex: false,
+          source: "file"
+        }
+        if (feedGuid !== undefined) {
+          feed.guid = unescapeEntity(feedGuid)
+        }
+        feeds.push(feed)
+      }
+    } else if (xmlUrl !== undefined && typeof xmlUrl === "string" && xmlUrl !== "") {
       const feed: PIResponseFeed = {
-        title: unescapeEntity(useTitle || ""),
+        title: "",
         url: unescapeEntity(xmlUrl || ""),
         originalUrl: unescapeEntity(xmlUrl || ""),
         fromIndex: false,
@@ -44,7 +65,10 @@ function getFeeds(node: Node): PIResponseFeed[] {
 function fileLoaded(event: ProgressEvent): PIResponseFeed[] {
   const target = event.target as FileReader
 
-  const parser = new Parser({})
+  const parser = new Parser({
+    reflectValues: false,
+    reflectAttrs: false
+  })
   let root: Node
   try {
     root = parser.parse(target.result as string)
@@ -59,7 +83,7 @@ function fileLoaded(event: ProgressEvent): PIResponseFeed[] {
 }
 
 function validFileType(file: File): boolean {
-  return OPML_FILE_TYPES.includes(file.type)
+  return OPML_FILE_TYPES.includes(file.type.toLowerCase())
 }
 
 export default function OPMLParser(file: File): Promise<PIResponseFeed[]> {
