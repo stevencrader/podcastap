@@ -28,6 +28,10 @@
     }
 }
 
+.emoji {
+    @apply h-6 max-h-6
+}
+
 .loading-large {
     @apply h-40 w-40
     [&>*]:h-8
