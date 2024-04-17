@@ -17,6 +17,10 @@ const SUPPORT_LINKS: LinkData[] = [
     href: "https://getalby.com/p/stevencrader"
   },
   {
+    title: "PayPal",
+    href: "https://paypal.me/stevencrader"
+  },
+  {
     title: "Personal Site",
     href: "https://steven.crader.co/"
   },
