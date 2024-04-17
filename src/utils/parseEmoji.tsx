@@ -28,7 +28,7 @@ export default function parseEmoji(display_name: string, emojis: Emoji[]): JSX.E
       parts.push(<span>{unknown_part.trim()}</span>)
       return
     }
-    parts.push(<img src={emoji.static_url} alt={`Emoji for shortcode ${emoji.shortcode}`} class="h-5" />)
+    parts.push(<img src={emoji.static_url} alt={`Emoji for shortcode ${emoji.shortcode}`} class="emoji" />)
   }
 
   let result: RegExpExecArray | null
