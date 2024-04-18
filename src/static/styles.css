@@ -29,7 +29,7 @@
 }
 
 .emoji {
-    @apply h-6 max-h-6
+    @apply h-4 max-h-4 lg:h-6 lg:max-h-6
 }
 
 .loading-large {

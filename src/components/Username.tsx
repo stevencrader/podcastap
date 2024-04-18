@@ -29,11 +29,11 @@ export function Username(props: UsernameProps) {
   const nameParts = parseEmoji(display_name, emojis)
 
   return (
-    <div class="inline-flex gap-2">
+    <div class="inline-flex gap-2 items-center">
       <a
         href={userLink}
         target="_blank"
-        class="flex flex-row gap-2 px-1 hover:underline underline-offset-4 text-slate-900 dark:text-slate-50"
+        class="flex flex-row gap-2 px-1 items-center hover:underline underline-offset-4 text-slate-900 dark:text-slate-50"
         title={`@${acct}@${serverBase}`}
       >
         {nameParts ? nameParts.map((part) => part) : <span>{display_name}</span>}

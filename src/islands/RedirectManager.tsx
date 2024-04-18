@@ -1,16 +1,18 @@
 import { IS_BROWSER } from "$fresh/runtime.ts"
 import { JSX } from "preact"
+import { PIResponseFeed } from "../types/podcastindex.ts"
+import { getAPBridgeUserLink, getAPBridgeUsername, getNativeUserLink, getNativeUsername } from "../utils/ap_user.ts"
 
 export const TOKEN_REDIRECT_FEED = "redirect-feed"
 
 interface RedirectManagerProps {
   redirect: boolean
-  id?: string | number
+  feed?: PIResponseFeed
   server?: string
 }
 
 export default function RedirectManager(props: RedirectManagerProps): JSX.Element {
-  const { redirect, id, server } = props
+  const { redirect, feed, server } = props
 
   function clicked(e: MouseEvent) {
     const checkbox = e.target as HTMLInputElement
@@ -40,8 +42,21 @@ export default function RedirectManager(props: RedirectManagerProps): JSX.Elemen
     )
   }
 
+  let username = ""
+  let userLink = ""
+  if (feed) {
+    if (feed.native && feed.link) {
+      username = getNativeUsername(feed.link)
+      userLink = getNativeUserLink(server, feed.link)
+    } else {
+      username = getAPBridgeUsername(feed.id)
+      userLink = getAPBridgeUserLink(server, feed.id)
+    }
+  }
+
+
   if (IS_BROWSER && redirect && server) {
-    const redirectURL = new URL(`@${id}@ap.podcastindex.org`, server)
+    const redirectURL = new URL(username, server)
     globalThis.open(redirectURL, "_blank")
   }
 
@@ -51,12 +66,12 @@ export default function RedirectManager(props: RedirectManagerProps): JSX.Elemen
         ? (
           <>
             <p>
-              {`Profile for @${id}@ap.podcastindex.org should have opened automatically. If not, open `}
+              {`Profile ${username} should have opened automatically. If not, open `}
               <a
-                href={`${server}@${id}@ap.podcastindex.org`}
+                href={userLink}
                 target="_blank"
               >
-                {`@${id}@ap.podcastindex.org`}
+                {username}
               </a>
               {` on ${server}`}
             </p>

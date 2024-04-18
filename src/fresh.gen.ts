@@ -3,11 +3,13 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import { type Manifest } from "$fresh/server.ts"
+import * as $CopyUserButton from "./islands/CopyUserButton.tsx"
 import * as $DarkModeControl from "./islands/DarkModeControl.tsx"
 import * as $Feed from "./islands/Feed.tsx"
 import * as $Feeds from "./islands/Feeds.tsx"
 import * as $FileInput from "./islands/FileInput.tsx"
 import * as $FollowUnfollow from "./islands/FollowUnfollow.tsx"
+import * as $icons_ActivityPubIcon from "./islands/icons/ActivityPubIcon.tsx"
 import * as $icons_CrossXIcon from "./islands/icons/CrossXIcon.tsx"
 import * as $icons_FediverseIcon from "./islands/icons/FediverseIcon.tsx"
 import * as $icons_LinkIcon from "./islands/icons/LinkIcon.tsx"
@@ -67,6 +69,7 @@ const manifest = {
     "./routes/upload.tsx": $upload
   },
   islands: {
+    "./islands/CopyUserButton.tsx": $CopyUserButton,
     "./islands/DarkModeControl.tsx": $DarkModeControl,
     "./islands/Feed.tsx": $Feed,
     "./islands/Feeds.tsx": $Feeds,
@@ -79,6 +82,7 @@ const manifest = {
     "./islands/RedirectManager.tsx": $RedirectManager,
     "./islands/SelectServer.tsx": $SelectServer,
     "./islands/Settings.tsx": $Settings,
+    "./islands/icons/ActivityPubIcon.tsx": $icons_ActivityPubIcon,
     "./islands/icons/CrossXIcon.tsx": $icons_CrossXIcon,
     "./islands/icons/FediverseIcon.tsx": $icons_FediverseIcon,
     "./islands/icons/LinkIcon.tsx": $icons_LinkIcon,
