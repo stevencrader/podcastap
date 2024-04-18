@@ -30,6 +30,11 @@ export default function DarkModeControl(props: DarkModeControlProps) {
     }
   }
 
+  function setThemeAuto() {
+    const matches = globalThis.matchMedia("(prefers-color-scheme: light)").matches
+    theme.value = matches ? "light" : "dark"
+  }
+
   useEffect(() => {
     globalThis.matchMedia("(prefers-color-scheme: light)").addEventListener("change", (e) => {
       if (isAuto.value) {
@@ -37,10 +42,8 @@ export default function DarkModeControl(props: DarkModeControlProps) {
       }
     })
 
-
     if (theme.value === "auto") {
-      const matches = globalThis.matchMedia("(prefers-color-scheme: light)").matches
-      theme.value = matches ? "light" : "dark"
+      setThemeAuto()
     }
 
     setThemeClass(theme.value === "dark")
@@ -55,6 +58,8 @@ export default function DarkModeControl(props: DarkModeControlProps) {
           const newValue = (e.target as HTMLSelectElement).value
           if (newValue === "auto") {
             isAuto.value = true
+            setThemeAuto()
+            setThemeClass(theme.value === "dark")
             setTheme("auto")
           } else {
             isAuto.value = false

@@ -13,8 +13,8 @@ function escape(text: string): string {
 function getOutline(feed: PIResponseFeed): string {
   let outline = `  <outline type="rss" text="${escape(feed.title)}" xmlUrl="${escape(feed.url)}"`
 
-  if (feed.guid) {
-    outline = `${outline} podcast:feedGuid="${escape(feed.guid)}"`
+  if (feed.podcastGuid) {
+    outline = `${outline} podcast:feedGuid="${escape(feed.podcastGuid)}"`
   }
   outline = `${outline} />`
   return outline

@@ -30,7 +30,7 @@ async function getServerData(server: string): Promise<DBServer | null> {
 
 export async function getOAuthConfig(server: string): Promise<OAuth2ClientConfig> {
   let updateServerData = false
-  console.log("Getting server", server)
+  // console.log("Getting server", server)
   let serverData = await getServerData(server)
   if (serverData === null) {
     throw new Error(`Unable to get server data for server ${server}`)
@@ -92,8 +92,6 @@ type VerifyUserReturn = {
 }
 
 export async function verifyUser(req: Request, server: string): Promise<VerifyUserReturn> {
-  const cookies = getCookies(req.headers)
-
   const headers = new Headers()
 
   const cookieName = getCookieName(SITE_COOKIE_NAME, isHttps(req.url))

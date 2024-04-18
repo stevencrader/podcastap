@@ -16,6 +16,7 @@ async function getCurrentFollow(
   if (followingResult.success && followingResult.following) {
     followingResult.following.forEach((account) => {
       const index = account.acct.indexOf("@")
+      // TODO would like to check if account is on Castopod or PeerTube but no identifier in Account
 
       if (index >= 0) {
         const id = account.acct.substring(0, index)
@@ -41,9 +42,10 @@ async function getCurrentFollow(
             title: account.display_name,
             url,
             originalUrl: url,
-            guid: guid,
+            podcastGuid: guid,
             fromIndex: false,
-            source: "account"
+            source: "account",
+            native: false
           })
         }
       }

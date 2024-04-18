@@ -9,6 +9,7 @@ import { getToken } from "../../plugins/mastodon_api.ts"
 import { getFeedFromID } from "../../plugins/podcastindex_api.ts"
 import { StateData } from "../../types/StateData.ts"
 import { lookup, LookupResult } from "../../utils/ap_lookup.ts"
+import { getAPBridgeUsername } from "../../utils/ap_user.ts"
 import { getCanonical, getTitle } from "../../utils/utils.ts"
 
 export function getRedirect(req: Request): boolean {
@@ -36,7 +37,12 @@ export const handler: Handlers = {
         const lookupResults = await lookup([result.feed], signedIn, activeServer, oauthToken, doRedirect || resolve)
 
         if (resolve && lookupResults.length > 0) {
-          const redirectURL = new URL(`@${lookupResults[0].feed.id}@ap.podcastindex.org`, activeServer)
+          let redirectURL: URL
+          if (lookupResults[0].feed.native && lookupResults[0].feed.link) {
+            redirectURL = new URL(lookupResults[0].feed.link)
+          } else {
+            redirectURL = new URL(getAPBridgeUsername(lookupResults[0].feed.id), activeServer)
+          }
           return new Response(null, {
             headers: {
               location: redirectURL.toString()
@@ -116,7 +122,7 @@ export default async function FeedPage(req: Request, ctx: FreshContext): Promise
               {signedIn && activeServer
                 ? disableRedirect
                   ? <></>
-                  : <RedirectManager server={activeServer} redirect={doRedirect} id={searchResults[0].feed.id} />
+                  : <RedirectManager server={activeServer} redirect={doRedirect} feed={searchResults[0].feed} />
                 : <p className="text-center">Sign in to follow or view on server</p>}
             </div>
           </div>

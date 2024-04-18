@@ -1,12 +1,15 @@
 import { Head } from "$fresh/runtime.ts"
 import { JSX } from "preact"
+import FollowUnfollow from "../islands/FollowUnfollow.tsx"
 import { LinkData } from "../types/LinkData.ts"
+import { AP_BRIDGE } from "../utils/ap_user.ts"
 import { getCanonical, getTitle } from "../utils/utils.ts"
 
 const SUPPORT_LINKS: LinkData[] = [
   {
     title: "Mastodon (podcastindex.social)",
-    href: "https://podcastindex.social/@steven"
+    href: "https://podcastindex.social/@steven",
+    button: true
   },
   {
     title: "X",
@@ -64,8 +67,18 @@ export default function AboutPage(): JSX.Element {
       </p>
 
       <p>
-        The feeds are bridged from the XML feed to the Podcast Index database to the Podcast Index Activity Pub bridge
-        (<code>ap.podcastindex.org</code>).
+        Most feeds are bridged from the XML feed to the Podcast Index database to the Podcast Index Activity Pub bridge
+        (<code>{AP_BRIDGE}</code>) using <a href="https://github.com/Podcastindex-org/pi-activitypub-server"
+                                            target="_blank">PI Activity Pub Server</a>.
+      </p>
+
+      <p>
+        {"Some feeds are already on the Fediverse so their accounts. If they can be identified, the option to follow "}
+        {"the account is shown in addition to the bridge. For example, feeds hosted on "}
+        <a href="https://castopod.org/" target="_blank">Castopod</a>
+        {" or "}
+        <a href="https://joinpeertube.org/" target="_blank">PeerTube</a>
+        {" servers."}
       </p>
 
       <p>
@@ -94,7 +107,18 @@ export default function AboutPage(): JSX.Element {
       <ul class="list-disc ml-8">
         {SUPPORT_LINKS.map((item) => (
           <li>
-            <a href={item.href} target="_blank">{item.title}</a>
+            {
+              item.button ?
+                <div className="inline-flex gap-2 items-center">
+                  <a href={item.href} target="_blank">{item.title}</a>
+                  <FollowUnfollow
+                    feedId={""}
+                    username={"steven@podcastindex.social"}
+                  />
+                </div>
+                :
+                <a href={item.href} target="_blank">{item.title}</a>
+            }
           </li>
         ))}
       </ul>

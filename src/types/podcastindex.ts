@@ -10,9 +10,12 @@ export interface PIResponseFeed {
   author?: string
   image?: string
   artwork?: string
-  guid?: string
+  podcastGuid?: string
+  generator?: string
+  // special values used only in PodcastAP
   fromIndex: boolean
   source: FeedSource
+  native: boolean // indicates feed is Fediverse native and should be used instead of bridge
 }
 
 export interface PIResponse {
