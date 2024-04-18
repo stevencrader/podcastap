@@ -5,8 +5,10 @@ import Loading from "./Loading.tsx"
 
 interface FollowUnfollowProps {
   feedId: string
+  username?: string
   accountId?: string
   relationship?: Relationship
+  suffix?: string
   onRelationshipChange?: (relationship: Relationship) => void
 }
 
@@ -26,7 +28,7 @@ function getRelationshipInfo(relationship?: Relationship): {
 }
 
 export default function FollowUnfollow(props: FollowUnfollowProps) {
-  const { feedId, relationship, onRelationshipChange } = props
+  const { feedId, username, relationship, suffix, onRelationshipChange } = props
   const { following, requested, muted, blocked } = getRelationshipInfo(relationship)
   let accountId = props.accountId
   const blockedSignal: Signal<boolean> = useSignal(blocked)
@@ -46,6 +48,10 @@ export default function FollowUnfollow(props: FollowUnfollowProps) {
     const url = new URL(`/api/mastodon/${api}`, globalThis.location.origin)
     if (accountId !== undefined) {
       url.searchParams.set("id", accountId)
+      url.searchParams.set("username", username || "")
+    } else if (username !== undefined) {
+      url.searchParams.set("username", username)
+      url.searchParams.set("lookup", "true")
     } else {
       url.searchParams.set("id", feedId)
       url.searchParams.set("lookup", "true")
@@ -72,13 +78,15 @@ export default function FollowUnfollow(props: FollowUnfollowProps) {
       }
       if (newErrorMessage) {
         errorMessage.value = newErrorMessage
-        setTimeout(() => errorMessage.value = "", 1500)
+        // setTimeout(() => errorMessage.value = "", 1500)
       }
     }
 
     working.value = false
     disabled.value = blockedSignal.value || mutedSignal.value || requestedSignal.value
   }
+
+  const suffixValue = suffix || "" ? ` ${suffix}` : ""
 
   return (
     <div className="flex flex-row gap-2 items-center">
@@ -89,14 +97,14 @@ export default function FollowUnfollow(props: FollowUnfollowProps) {
         <Loading size="small" className={`${working.value ? "" : "hidden"} [&>div.segment]:bg-slate-200`} />
         <span className={working.value ? "hidden" : ""}>
           {followingSignal.value
-            ? "Unfollow"
+            ? `Unfollow${suffixValue}`
             : blockedSignal.value
               ? "Blocked"
               : mutedSignal.value
                 ? "Muted"
                 : requestedSignal.value
                   ? "Request Sent"
-                  : "Follow"}
+                  : `Follow${suffixValue}`}
         </span>
       </Button>
       {errorMessage.value === "" ? <></> : <span>{errorMessage.value}</span>}

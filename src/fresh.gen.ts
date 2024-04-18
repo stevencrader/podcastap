@@ -3,6 +3,7 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import { type Manifest } from "$fresh/server.ts"
+import * as $CopyUserButton from "./islands/CopyUserButton.tsx"
 import * as $DarkModeControl from "./islands/DarkModeControl.tsx"
 import * as $Feed from "./islands/Feed.tsx"
 import * as $Feeds from "./islands/Feeds.tsx"
@@ -67,6 +68,7 @@ const manifest = {
     "./routes/upload.tsx": $upload
   },
   islands: {
+    "./islands/CopyUserButton.tsx": $CopyUserButton,
     "./islands/DarkModeControl.tsx": $DarkModeControl,
     "./islands/Feed.tsx": $Feed,
     "./islands/Feeds.tsx": $Feeds,

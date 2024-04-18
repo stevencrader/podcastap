@@ -9,6 +9,7 @@ import {
 } from "../plugins/podcastindex_api.ts"
 import { Account, Relationship } from "../types/MastodonAPI.ts"
 import { PIResponseFeed, RequestResult } from "../types/podcastindex.ts"
+import { getAPBridgeUsername, getNativeUsername } from "./ap_user.ts"
 
 interface APData {
   account: Account
@@ -18,18 +19,19 @@ interface APData {
 export interface LookupResult {
   feed: PIResponseFeed
   apData?: APData
+  nativeApData?: APData
 }
 
 async function lookupFeed(feed: PIResponseFeed): Promise<RequestResult> {
-  const { title, url, guid, id, fromIndex } = feed
+  const { title, url, podcastGuid, id, fromIndex, native } = feed
   let requestResult: RequestResult = {
     success: false,
     statusCode: STATUS_CODE.InternalServerError,
     errorMessage: "No field for lookup"
   }
 
-  // if data already known, skip lookup
-  if (id && title && url && fromIndex) {
+  // if data already known, skip lookup unless native flag not set
+  if (id && title && url && fromIndex && native !== undefined) {
     // console.log("returning with known data", title, id, feed.source, requestResult.feed?.id, requestResult.feed?.title)
     return buildResultSuccess(feed)
   }
@@ -44,10 +46,10 @@ async function lookupFeed(feed: PIResponseFeed): Promise<RequestResult> {
   }
 
   // If still here, try GUID
-  if (guid) {
-    requestResult = await getFeedFromGUID(guid, feed)
+  if (podcastGuid) {
+    requestResult = await getFeedFromGUID(podcastGuid, feed)
     if (requestResult.success) {
-      // console.log("returning with valid feed GUID", title, guid, feed.source, requestResult.feed?.id, requestResult.feed?.title)
+      // console.log("returning with valid feed GUID", title, podcastGuid, feed.source, requestResult.feed?.id, requestResult.feed?.title)
       return requestResult
     }
   }
@@ -75,6 +77,45 @@ async function lookupFeed(feed: PIResponseFeed): Promise<RequestResult> {
   return requestResult
 }
 
+async function getApData(
+  feed: PIResponseFeed,
+  native: boolean,
+  oauthToken: string,
+  activeServer: string,
+  ids: string[],
+  resolve = false
+): Promise<APData | undefined> {
+  let username
+  if (native) {
+    if (!(feed.native && feed.link)) {
+      return
+    }
+    username = getNativeUsername(feed.link, false)
+  } else {
+    username = getAPBridgeUsername(feed.id, false)
+  }
+
+  const accountResult = await searchAndVerifyAccount(oauthToken, activeServer, `@${username}`, username, resolve)
+  if (accountResult.success && accountResult.account) {
+    if (!ids.includes(accountResult.account.id)) {
+      ids.push(accountResult.account.id)
+      return {
+        account: accountResult.account,
+        relationship: {
+          id: accountResult.account.id,
+          following: false,
+          blocked_by: false,
+          blocking: false,
+          domain_blocking: false,
+          muting: false,
+          requested: false
+        }
+      }
+    }
+  }
+
+}
+
 export async function lookup(
   feeds: PIResponseFeed[],
   signedIn: boolean,
@@ -97,25 +138,8 @@ export async function lookup(
 
     // mastodon lookup
     if (signedIn && activeServer && oauthToken && lookupResult.feed.id) {
-      const username = `${lookupResult.feed.id}@ap.podcastindex.org`
-      const accountResult = await searchAndVerifyAccount(oauthToken, activeServer, `@${username}`, username, resolve)
-      if (accountResult.success && accountResult.account) {
-        if (!ids.includes(accountResult.account.id)) {
-          ids.push(accountResult.account.id)
-          lookupResult.apData = {
-            account: accountResult.account,
-            relationship: {
-              id: accountResult.account.id,
-              following: false,
-              blocked_by: false,
-              blocking: false,
-              domain_blocking: false,
-              muting: false,
-              requested: false
-            }
-          }
-        }
-      }
+      lookupResult.apData = await getApData(lookupResult.feed, false, oauthToken, activeServer, ids, resolve)
+      lookupResult.nativeApData = await getApData(lookupResult.feed, true, oauthToken, activeServer, ids, resolve)
     }
 
     return lookupResult
@@ -132,6 +156,7 @@ export async function lookup(
     if (relationshipResults.success && relationshipResults.results) {
       const relationships = relationshipResults.results
       relationships.forEach((relationship) => {
+
         const matchingLookupResult = lookupResultsUnique.find((lookupResult) => {
           if (lookupResult.apData) {
             return lookupResult.apData.account.id === relationship.id
@@ -144,6 +169,22 @@ export async function lookup(
             matchingLookupResult.apData.relationship = relationship
           }
         }
+
+
+        const nativeMatchingLookupResult = lookupResultsUnique.find((lookupResult) => {
+          if (lookupResult.nativeApData) {
+            return lookupResult.nativeApData.account.id === relationship.id
+          }
+          return false
+        })
+
+        if (nativeMatchingLookupResult) {
+          if (nativeMatchingLookupResult.nativeApData) {
+            nativeMatchingLookupResult.nativeApData.relationship = relationship
+          }
+        }
+
+
       })
     }
   }

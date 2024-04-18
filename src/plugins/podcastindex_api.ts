@@ -1,6 +1,7 @@
 import { STATUS_CODE } from "$fresh/server.ts"
 import { encodeHex } from "@std/encoding/hex"
 import { PIHeaders, PIResponse, PIResponseFeed, RequestResult } from "../types/podcastindex.ts"
+import { getNativeUsername } from "../utils/ap_user.ts"
 import { getRequiredEnv } from "../utils/utils.ts"
 
 const BASE_API_URL = getRequiredEnv("BASE_API_URL")
@@ -43,10 +44,34 @@ type RequestParams = {
   max?: string
 }
 
+function isNative(feed: PIResponseFeed, originalFeed?: PIResponseFeed): boolean {
+  const native = feed?.native || originalFeed?.native
+  // console.log("checking feed isNative", feed?.generator, native, feed.title)
+  // if already marked native, return
+  if (native) {
+    return true
+  }
+
+  const generator = (feed?.generator || "").toLowerCase()
+  // Are their other hosts/generators that are Fediverse first?
+  // Is there another signal that could be used?
+  // See https://github.com/Podcastindex-org/podcast-namespace/discussions/559
+
+  const generatorMatch = generator.includes("castopod") || generator.includes("toraifōsu")
+  // TODO: should there be a check to see if it isn't a false positive?
+  if (generatorMatch && feed.link) {
+    const username = getNativeUsername(feed.link)
+    return username !== ""
+  }
+  return false
+}
+
+
 function buildPIResponseFeed(feed: PIResponseFeed, originalFeed?: PIResponseFeed): PIResponseFeed {
   const id = feed.id || originalFeed?.id
   const title = feed.title || originalFeed?.title
   const url = feed.url || originalFeed?.url
+  const native = isNative(feed, originalFeed)
   return {
     // rebuilding feed here since the feed passed in may contain attributes not needed (from the API)
     id: id,
@@ -58,9 +83,10 @@ function buildPIResponseFeed(feed: PIResponseFeed, originalFeed?: PIResponseFeed
     author: feed.author || originalFeed?.author,
     image: feed.image || originalFeed?.image,
     artwork: feed.artwork || originalFeed?.artwork,
-    // guid: feed.guid || originalFeed?.guid,
+    podcastGuid: feed.podcastGuid || originalFeed?.podcastGuid,
     fromIndex: id !== undefined && title !== undefined && url !== undefined,
-    source: originalFeed?.source || feed.source || "search"
+    source: originalFeed?.source || feed.source || "search",
+    native: originalFeed?.native || native
   }
 }
 

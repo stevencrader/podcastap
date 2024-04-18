@@ -6,6 +6,41 @@ import { Account, Application, MastodonError, Relationship } from "../types/Mast
 import { DBServer } from "./db.ts"
 import { TOKEN_COOKIE_NAME } from "./kv_oauth.ts"
 
+interface BaseResult {
+  success: boolean
+  status: StatusCode
+  error?: MastodonError
+}
+
+export interface RunAPIResult extends BaseResult {
+  data?: unknown
+  linkHeader?: LinkHeader
+}
+
+export interface VerifyCredentialsResult extends BaseResult {
+  user?: Account
+}
+
+export interface FollowingResult extends BaseResult {
+  following?: Account[]
+}
+
+export interface SearchResult extends BaseResult {
+  results?: Account[]
+}
+
+export interface SearchAndVerifyResult extends BaseResult {
+  account?: Account
+}
+
+export interface RelationshipsResult extends BaseResult {
+  results?: Relationship[]
+}
+
+export interface RelationshipResult extends BaseResult {
+  relationship?: Relationship
+}
+
 export async function createApp(serverData: DBServer, redirectUri: string, scope: string): Promise<DBServer | null> {
   const formData = new FormData()
   formData.append("client_name", "PodcastAP")
@@ -43,13 +78,7 @@ async function runAPI(
   server: string,
   apiPath: string,
   params?: URLSearchParams
-): Promise<{
-  success: boolean
-  status: StatusCode
-  data?: unknown
-  linkHeader?: LinkHeader
-  error?: MastodonError
-}> {
+): Promise<RunAPIResult> {
   if (token === undefined) {
     return {
       success: false,
@@ -99,13 +128,7 @@ async function runAPIGet(
   server: string,
   apiPath: string,
   params?: URLSearchParams
-): Promise<{
-  success: boolean
-  status: StatusCode
-  data?: unknown
-  linkHeader?: LinkHeader
-  error?: MastodonError
-}> {
+): Promise<RunAPIResult> {
   return await runAPI("get", token, server, apiPath, params)
 }
 
@@ -114,22 +137,11 @@ async function runAPIPost(
   server: string,
   apiPath: string,
   params?: URLSearchParams
-): Promise<{
-  success: boolean
-  status: StatusCode
-  data?: unknown
-  linkHeader?: LinkHeader
-  error?: MastodonError
-}> {
+): Promise<RunAPIResult> {
   return await runAPI("post", token, server, apiPath, params)
 }
 
-export async function verifyCredentials(token: string | undefined, server: string): Promise<{
-  success: boolean
-  status: StatusCode
-  user?: Account
-  error?: MastodonError
-}> {
+export async function verifyCredentials(token: string | undefined, server: string): Promise<VerifyCredentialsResult> {
   const result = await runAPIGet(token, server, "/api/v1/accounts/verify_credentials")
   return {
     success: result.success,
@@ -139,18 +151,8 @@ export async function verifyCredentials(token: string | undefined, server: strin
   }
 }
 
-export async function getFollowing(token: string | undefined, server: string, user: Account): Promise<{
-  success: boolean
-  status: StatusCode
-  following?: Account[]
-  error?: MastodonError
-}> {
-  const overallResult: {
-    success: boolean
-    status: StatusCode
-    following: Account[]
-    error?: MastodonError
-  } = {
+export async function getFollowing(token: string | undefined, server: string, user: Account): Promise<FollowingResult> {
+  const overallResult: FollowingResult = {
     success: true,
     status: STATUS_CODE.OK,
     following: [],
@@ -171,7 +173,7 @@ export async function getFollowing(token: string | undefined, server: string, us
     if (result.success) {
       params = undefined
       const data = result.data as Account[]
-      if (data) {
+      if (data && overallResult.following) {
         overallResult.following.push(...data)
       }
       if (result.linkHeader === undefined) {
@@ -203,12 +205,7 @@ export async function searchAccount(
   server: string,
   searchTerm: string,
   resolve: boolean
-): Promise<{
-  success: boolean
-  status: StatusCode
-  results?: Account[]
-  error?: MastodonError
-}> {
+): Promise<SearchResult> {
   const params: URLSearchParams = new URLSearchParams({
     q: searchTerm,
     limit: "1",
@@ -229,12 +226,7 @@ export async function searchAndVerifyAccount(
   searchTerm: string,
   username: string,
   resolve: boolean
-): Promise<{
-  success: boolean
-  status: StatusCode
-  account?: Account
-  error?: MastodonError
-}> {
+): Promise<SearchAndVerifyResult> {
   const result = await searchAccount(token, server, searchTerm, resolve)
   if (!result.success || result.results === undefined || result.results.length === 0) {
     return {
@@ -264,12 +256,7 @@ export async function searchAndVerifyAccount(
   }
 }
 
-export async function getRelationship(token: string | undefined, server: string, ids: string[]): Promise<{
-  success: boolean
-  status: StatusCode
-  results?: Relationship[]
-  error?: MastodonError
-}> {
+export async function getRelationship(token: string | undefined, server: string, ids: string[]): Promise<RelationshipsResult> {
   const params: URLSearchParams = new URLSearchParams()
   ids.forEach((id) => params.append("id[]", id))
   const result = await runAPIGet(token, server, `/api/v1/accounts/relationships`, params)
@@ -281,12 +268,7 @@ export async function getRelationship(token: string | undefined, server: string,
   }
 }
 
-export async function followAccount(token: string | undefined, server: string, id: string): Promise<{
-  success: boolean
-  status: StatusCode
-  relationship?: Relationship
-  error?: MastodonError
-}> {
+export async function followAccount(token: string | undefined, server: string, id: string): Promise<RelationshipResult> {
   const result = await runAPIPost(token, server, `/api/v1/accounts/${id}/follow`)
   return {
     success: result.success,
@@ -296,12 +278,7 @@ export async function followAccount(token: string | undefined, server: string, i
   }
 }
 
-export async function unfollowAccount(token: string | undefined, server: string, id: string): Promise<{
-  success: boolean
-  status: StatusCode
-  relationship?: Relationship
-  error?: MastodonError
-}> {
+export async function unfollowAccount(token: string | undefined, server: string, id: string): Promise<RelationshipResult> {
   const result = await runAPIPost(token, server, `/api/v1/accounts/${id}/unfollow`)
   return {
     success: result.success,

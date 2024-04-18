@@ -1,9 +1,10 @@
 import { Signal, useSignal } from "@preact/signals"
 import { JSX } from "preact"
 import { useEffect, useState } from "preact/hooks"
-import { Button } from "../components/Button.tsx"
 import { Relationship } from "../types/MastodonAPI.ts"
 import { LookupResult } from "../utils/ap_lookup.ts"
+import { getAPBridgeUserLink, getAPBridgeUsername, getNativeUserLink, getNativeUsername } from "../utils/ap_user.ts"
+import CopyUserButton from "./CopyUserButton.tsx"
 import FollowUnfollow from "./FollowUnfollow.tsx"
 import FediverseIcon from "./icons/FediverseIcon.tsx"
 import LinkIcon from "./icons/LinkIcon.tsx"
@@ -41,9 +42,11 @@ function FeedImage(props: {
 
 export default function Feed(props: FeedProps): JSX.Element {
   const { lookupResult, activeServer, authenticated } = props
-  const copyMessage = useSignal("")
   const relationshipSignal: Signal<Relationship | undefined> = useSignal(lookupResult?.apData?.relationship)
+  const relationshipNativeSignal: Signal<Relationship | undefined> = useSignal(lookupResult?.nativeApData?.relationship)
   const [imageUrl, setImageUrl] = useState<string>("/noimage.jpg")
+
+  const marginValue = lookupResult.feed.native && lookupResult.feed.link ? "" : "mt-auto"
 
   useEffect(() => {
     if (lookupResult.feed.image) {
@@ -63,40 +66,6 @@ export default function Feed(props: FeedProps): JSX.Element {
     }
   }, [])
 
-  async function copyAPUser() {
-    const apUser = `@${lookupResult.feed.id}@ap.podcastindex.org`
-    let message: string
-    let permission = { state: "granted" }
-
-    try {
-      permission = await navigator.permissions.query({
-        // deno-lint-ignore ban-ts-comment
-        // @ts-ignore
-        name: "clipboard-write"
-      })
-    } catch {
-      // ignore
-    }
-
-    if (permission.state === "granted" || permission.state === "prompt") {
-      message = await navigator.clipboard.writeText(apUser)
-        .then(() => {
-          return "Text copied"
-        })
-        .catch(() => {
-          return "Unable to copy text"
-        })
-    } else {
-      message = "Unable to change clipboard"
-    }
-
-    if (message) {
-      copyMessage.value = message
-      setTimeout(() => {
-        copyMessage.value = ""
-      }, 1500)
-    }
-  }
 
   return (
     <div className="border border-zinc-800 flex flex-col md:flex-row p-2 gap-2">
@@ -156,20 +125,40 @@ export default function Feed(props: FeedProps): JSX.Element {
             )
             : <></>}
 
-          {activeServer && (lookupResult.apData || relationshipSignal.value !== undefined)
-            ? (
+          {
+            activeServer && lookupResult.feed.native && lookupResult.feed.link && (lookupResult.nativeApData || relationshipNativeSignal.value !== undefined) ?
               <li>
                 <a
-                  href={`${activeServer}@${lookupResult.feed.id}@ap.podcastindex.org`}
+                  href={getNativeUserLink(activeServer, lookupResult.feed.link)}
                   target="_blank"
                   rel="nofollow"
-                  title={`@${lookupResult.feed.id}@ap.podcastindex.org`}
+                  title={getNativeUsername(lookupResult.feed.link)}
                 >
+                  {/* TODO: different icon for native vs bridge */}
                   <FediverseIcon />
                 </a>
               </li>
-            )
-            : <></>}
+              :
+              <></>
+          }
+
+          {
+            activeServer && (lookupResult.apData || relationshipSignal.value !== undefined)
+              ?
+              (
+                <li>
+                  <a
+                    href={getAPBridgeUserLink(activeServer, lookupResult.feed.id)}
+                    target="_blank"
+                    rel="nofollow"
+                    title={getAPBridgeUsername(lookupResult.feed.id)}
+                  >
+                    <FediverseIcon />
+                  </a>
+                </li>
+              )
+              : <></>
+          }
 
           {lookupResult.feed.id && lookupResult.feed.title
             ? (
@@ -191,31 +180,43 @@ export default function Feed(props: FeedProps): JSX.Element {
             : <></>
         }
 
-        <ul className="flex flex-row gap-2 mt-auto pt-1 items-center ">
-          {/* buttons */}
-          {
-            lookupResult.feed?.id
-              ? (
-                <div class="flex gap-2 items-center ">
-                  <Button
-                    title="Copy AP User to clipboard"
-                    onClick={copyAPUser}
-                    disabled={copyMessage.value !== ""}
-                  >
-                    <span className={copyMessage.value === "" ? "" : "hidden"}>Copy AP User</span>
-                    <span className={copyMessage.value === "" ? "hidden" : ""}>{copyMessage.value}</span>
-                  </Button>
-                </div>
-              )
-              : <></>
-          }
+        {
+          lookupResult?.feed?.id && lookupResult.feed.native && lookupResult.feed.link ?
+            <ul className="flex flex-row gap-2 mt-auto pt-1 md:items-center ">
+              {/* buttons */}
+              <CopyUserButton lookupResult={lookupResult} native={true} />
+              {
+                activeServer && authenticated ?
+                  <FollowUnfollow
+                    feedId={lookupResult?.feed?.id?.toString() || ""}
+                    username={getNativeUsername(lookupResult.feed.link, false)}
+                    accountId={lookupResult.nativeApData?.account?.id || relationshipNativeSignal.value?.id}
+                    relationship={relationshipNativeSignal.value}
+                    onRelationshipChange={(relationship) => {
+                      relationshipNativeSignal.value = relationship
+                    }}
+                  />
+                  :
+                  <></>
+              }
+            </ul>
+            :
+            <></>
+        }
 
+        <ul className={`flex flex-row gap-2 ${marginValue} pt-1 md:items-center `}>
+          {/* buttons */}
+          <CopyUserButton lookupResult={lookupResult} native={false} />
           {
             activeServer && authenticated ?
               <FollowUnfollow
                 feedId={lookupResult?.feed?.id?.toString() || ""}
                 accountId={lookupResult.apData?.account?.id || relationshipSignal.value?.id}
                 relationship={relationshipSignal.value}
+                suffix={
+                  lookupResult?.feed?.id && lookupResult.feed.native && lookupResult.feed.link ?
+                    "Bridge User" : ""
+                }
                 onRelationshipChange={(relationship) => {
                   relationshipSignal.value = relationship
                 }}

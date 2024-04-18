@@ -36,10 +36,11 @@ function getFeeds(node: Node): PIResponseFeed[] {
           url: unescapeEntity(xmlUrl || ""),
           originalUrl: unescapeEntity(xmlUrl || ""),
           fromIndex: false,
-          source: "file"
+          source: "file",
+          native: false // assume not native until Podcast Index API call
         }
         if (feedGuid !== undefined) {
-          feed.guid = unescapeEntity(feedGuid)
+          feed.podcastGuid = unescapeEntity(feedGuid)
         }
         feeds.push(feed)
       }
@@ -49,10 +50,11 @@ function getFeeds(node: Node): PIResponseFeed[] {
         url: unescapeEntity(xmlUrl || ""),
         originalUrl: unescapeEntity(xmlUrl || ""),
         fromIndex: false,
-        source: "file"
+        source: "file",
+        native: false // assume not native until Podcast Index API call
       }
       if (feedGuid !== undefined) {
-        feed.guid = unescapeEntity(feedGuid)
+        feed.podcastGuid = unescapeEntity(feedGuid)
       }
       feeds.push(feed)
     }
