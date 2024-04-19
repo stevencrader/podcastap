@@ -9,10 +9,20 @@ import { createMastodonOAuthConfig } from "./create_mastodon_oauth_config.ts"
 import { addServerInfo, DBServer, getServer } from "./db.ts"
 import { createApp, getToken, verifyCredentials } from "./mastodon_api.ts"
 
-const SERVER_URL = getRequiredEnv("SERVER_URL")
-
 export const TOKEN_COOKIE_NAME = "oauth-token"
 export const SERVER_COOKIE_NAME = "active-server"
+
+function getServerUrl(): string {
+  // attempt to get deno deploy values
+  const denoDeploymentId = Deno.env.get("DENO_DEPLOYMENT_ID")
+  console.log("denoDeploymentId", denoDeploymentId)
+  const githubBranch = Deno.env.get("GITHUB_BRANCH")
+  console.log("githubBranch", githubBranch)
+
+  return getRequiredEnv("SERVER_URL")
+}
+
+const SERVER_URL = getServerUrl()
 
 export function getActiveServer(req: Request): string | undefined {
   const cookies = getCookies(req.headers)

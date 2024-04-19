@@ -32,9 +32,15 @@ jobs:
           USER_AGENT: ${{ secrets.USER_AGENT }}
         run: "deno task build"
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "podcastap"
           entrypoint: "main.ts"
           root: "src"
+          env: GITHUB_BRANCH=${{ steps.extract_branch.outputs.branch }}
