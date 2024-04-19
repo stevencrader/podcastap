@@ -55,6 +55,7 @@ export async function getOAuthConfig(server: string): Promise<OAuth2ClientConfig
     updateServerData = true
   }
 
+  getServerUrl()
   const redirectUrl = new URL("/auth/callback", SERVER_URL)
   const redirectUri = redirectUrl.toString()
   const scope = "read:accounts read:follows read:search write:follows"
