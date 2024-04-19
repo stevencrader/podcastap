@@ -6,36 +6,19 @@ import { getAPBridgeUsername, getNativeUsername } from "../utils/ap_user.ts"
 
 interface CopyUserButtonProps {
   lookupResult: LookupResult
-  native: boolean
 }
 
 export default function CopyUserButton(props: CopyUserButtonProps): JSX.Element {
-  const { lookupResult, native } = props
+  const { lookupResult } = props
   const copyMessage = useSignal("")
 
-  if (native) {
-    if (!(lookupResult.feed.native && lookupResult.feed.link)) {
-      return <></>
-    }
-  } else if (!lookupResult.feed.id) {
-    return <></>
-  }
+  const title = "Copy AP User to clipboard"
 
-  const title = native ?
-    "Copy Native AP User to clipboard" :
-    lookupResult.feed.native ?
-      "Copy Bridge AP User to clipboard" :
-      "Copy AP User to clipboard"
-
-  const text = native ?
-    "Copy AP User" :
-    lookupResult.feed.native ?
-      "Copy Bridge AP User" :
-      "Copy AP User"
+  const text = "Copy AP User"
 
   async function copyAPUser() {
     let apUser
-    if (native && lookupResult.feed.native && lookupResult.feed.link) {
+    if (lookupResult.feed.native && lookupResult.feed.link) {
       apUser = getNativeUsername(lookupResult.feed.link)
     } else {
       apUser = getAPBridgeUsername(lookupResult.feed.id)
