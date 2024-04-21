@@ -4,7 +4,8 @@ import { PIResponseFeed } from "../types/podcastindex.ts"
 const OPML_FILE_TYPES: string[] = [
   "text/x-opml+xml",
   "application/xml",
-  "text/xml"
+  "text/xml",
+  "text/x-opml"
 ]
 
 type OPMLAttributes = {
