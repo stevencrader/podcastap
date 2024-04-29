@@ -2,13 +2,20 @@ import { FreshContext } from "$fresh/server.ts"
 import { JSX } from "preact"
 import SelectServer from "../islands/SelectServer.tsx"
 import { StateData } from "../types/StateData.ts"
+import { getCanonical } from "../utils/utils.ts"
+import { Head } from "$fresh/runtime.ts"
 
 // deno-lint-ignore require-await
 export default async function HomePage(_req: Request, ctx: FreshContext): Promise<JSX.Element> {
   const stateData = ctx.state.data as StateData
+  const canonical = getCanonical("")
 
   return (
     <section className="flex-1 flex flex-col items-center justify-center">
+      <Head>
+        <link rel="canonical" href={canonical} />
+        <meta property="og:url" content={canonical} />
+      </Head>
       <div className="flex flex-col items-center justify-center space-y-4 text-center px-4">
         <h1 className="text-4xl tracking-tighter md:text-6xl">
           Follow Podcasts and Music feeds on the Fediverse
