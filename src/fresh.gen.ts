@@ -2,31 +2,6 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import { type Manifest } from "$fresh/server.ts"
-import * as $CopyUserButton from "./islands/CopyUserButton.tsx"
-import * as $DarkModeControl from "./islands/DarkModeControl.tsx"
-import * as $Feed from "./islands/Feed.tsx"
-import * as $Feeds from "./islands/Feeds.tsx"
-import * as $FileInput from "./islands/FileInput.tsx"
-import * as $FollowUnfollow from "./islands/FollowUnfollow.tsx"
-import * as $icons_CrossXIcon from "./islands/icons/CrossXIcon.tsx"
-import * as $icons_FediverseIcon from "./islands/icons/FediverseIcon.tsx"
-import * as $icons_LinkIcon from "./islands/icons/LinkIcon.tsx"
-import * as $icons_MagnifyingGlassIcon from "./islands/icons/MagnifyingGlassIcon.tsx"
-import * as $icons_MoonIcon from "./islands/icons/MoonIcon.tsx"
-import * as $icons_PlaylistIcon from "./islands/icons/PlaylistIcon.tsx"
-import * as $icons_PodcastAPIcon from "./islands/icons/PodcastAPIcon.tsx"
-import * as $icons_PodcastIndexIcon from "./islands/icons/PodcastIndexIcon.tsx"
-import * as $icons_RSSIcon from "./islands/icons/RSSIcon.tsx"
-import * as $icons_SunIcon from "./islands/icons/SunIcon.tsx"
-import * as $icons_UploadIcon from "./islands/icons/UploadIcon.tsx"
-import * as $Loading from "./islands/Loading.tsx"
-import * as $LocalServerHandler from "./islands/LocalServerHandler.tsx"
-import * as $OPMLParser from "./islands/OPMLParser.tsx"
-import * as $OPMLWriter from "./islands/OPMLWriter.tsx"
-import * as $RedirectManager from "./islands/RedirectManager.tsx"
-import * as $SelectServer from "./islands/SelectServer.tsx"
-import * as $Settings from "./islands/Settings.tsx"
 import * as $_404 from "./routes/_404.tsx"
 import * as $_500 from "./routes/_500.tsx"
 import * as $_app from "./routes/_app.tsx"
@@ -45,6 +20,31 @@ import * as $legal from "./routes/legal.tsx"
 import * as $search from "./routes/search.tsx"
 import * as $settings from "./routes/settings.tsx"
 import * as $upload from "./routes/upload.tsx"
+import * as $CopyUserButton from "./islands/CopyUserButton.tsx"
+import * as $DarkModeControl from "./islands/DarkModeControl.tsx"
+import * as $Feed from "./islands/Feed.tsx"
+import * as $Feeds from "./islands/Feeds.tsx"
+import * as $FileInput from "./islands/FileInput.tsx"
+import * as $FollowUnfollow from "./islands/FollowUnfollow.tsx"
+import * as $Loading from "./islands/Loading.tsx"
+import * as $LocalServerHandler from "./islands/LocalServerHandler.tsx"
+import * as $OPMLParser from "./islands/OPMLParser.tsx"
+import * as $OPMLWriter from "./islands/OPMLWriter.tsx"
+import * as $RedirectManager from "./islands/RedirectManager.tsx"
+import * as $SelectServer from "./islands/SelectServer.tsx"
+import * as $Settings from "./islands/Settings.tsx"
+import * as $icons_CrossXIcon from "./islands/icons/CrossXIcon.tsx"
+import * as $icons_FediverseIcon from "./islands/icons/FediverseIcon.tsx"
+import * as $icons_LinkIcon from "./islands/icons/LinkIcon.tsx"
+import * as $icons_MagnifyingGlassIcon from "./islands/icons/MagnifyingGlassIcon.tsx"
+import * as $icons_MoonIcon from "./islands/icons/MoonIcon.tsx"
+import * as $icons_PlaylistIcon from "./islands/icons/PlaylistIcon.tsx"
+import * as $icons_PodcastAPIcon from "./islands/icons/PodcastAPIcon.tsx"
+import * as $icons_PodcastIndexIcon from "./islands/icons/PodcastIndexIcon.tsx"
+import * as $icons_RSSIcon from "./islands/icons/RSSIcon.tsx"
+import * as $icons_SunIcon from "./islands/icons/SunIcon.tsx"
+import * as $icons_UploadIcon from "./islands/icons/UploadIcon.tsx"
+import { type Manifest } from "$fresh/server.ts"
 
 const manifest = {
   routes: {
@@ -65,7 +65,7 @@ const manifest = {
     "./routes/legal.tsx": $legal,
     "./routes/search.tsx": $search,
     "./routes/settings.tsx": $settings,
-    "./routes/upload.tsx": $upload
+    "./routes/upload.tsx": $upload,
   },
   islands: {
     "./islands/CopyUserButton.tsx": $CopyUserButton,
@@ -91,9 +91,9 @@ const manifest = {
     "./islands/icons/PodcastIndexIcon.tsx": $icons_PodcastIndexIcon,
     "./islands/icons/RSSIcon.tsx": $icons_RSSIcon,
     "./islands/icons/SunIcon.tsx": $icons_SunIcon,
-    "./islands/icons/UploadIcon.tsx": $icons_UploadIcon
+    "./islands/icons/UploadIcon.tsx": $icons_UploadIcon,
   },
-  baseUrl: import.meta.url
+  baseUrl: import.meta.url,
 } satisfies Manifest
 
 export default manifest
