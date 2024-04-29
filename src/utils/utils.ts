@@ -7,11 +7,7 @@ export function getTitle(prefix = ""): string {
 }
 
 export function getCanonical(path: string): string {
-  const urlBase = 'https://podcastap.com'
-  if (path === "") {
-    return urlBase
-  }
-  return `${urlBase}/${path}`
+  return `https://podcastap.com/${path}`
 }
 
 export function getRequiredEnv(key: string): string {
