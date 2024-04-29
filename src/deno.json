@@ -30,6 +30,7 @@
   "imports": {
     "$deno_kv_oauth/": "https://raw.githubusercontent.com/denoland/deno_kv_oauth/49bfffb4e7915ac12f5d67b01b8f2f93bcfdede2/",
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
+    "$fresh_seo/": "https://deno.land/x/fresh_seo@1.0.1/",
     "$xmlparser/": "https://deno.land/x/xmlparser@v0.2.0/",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
