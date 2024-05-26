@@ -12,6 +12,7 @@ export interface PIResponseFeed {
   artwork?: string
   podcastGuid?: string
   generator?: string
+  itunesId?: string
   // special values used only in PodcastAP
   fromIndex: boolean
   source: FeedSource

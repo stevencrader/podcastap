@@ -34,6 +34,7 @@ import * as $RedirectManager from "./islands/RedirectManager.tsx"
 import * as $SelectServer from "./islands/SelectServer.tsx"
 import * as $Settings from "./islands/Settings.tsx"
 import * as $icons_CrossXIcon from "./islands/icons/CrossXIcon.tsx"
+import * as $icons_EpisodesFMIcon from "./islands/icons/EpisodesFMIcon.tsx"
 import * as $icons_FediverseIcon from "./islands/icons/FediverseIcon.tsx"
 import * as $icons_LinkIcon from "./islands/icons/LinkIcon.tsx"
 import * as $icons_MagnifyingGlassIcon from "./islands/icons/MagnifyingGlassIcon.tsx"
@@ -82,6 +83,7 @@ const manifest = {
     "./islands/SelectServer.tsx": $SelectServer,
     "./islands/Settings.tsx": $Settings,
     "./islands/icons/CrossXIcon.tsx": $icons_CrossXIcon,
+    "./islands/icons/EpisodesFMIcon.tsx": $icons_EpisodesFMIcon,
     "./islands/icons/FediverseIcon.tsx": $icons_FediverseIcon,
     "./islands/icons/LinkIcon.tsx": $icons_LinkIcon,
     "./islands/icons/MagnifyingGlassIcon.tsx": $icons_MagnifyingGlassIcon,

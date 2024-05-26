@@ -10,6 +10,7 @@ import FediverseIcon from "./icons/FediverseIcon.tsx"
 import LinkIcon from "./icons/LinkIcon.tsx"
 import PodcastIndexIcon from "./icons/PodcastIndexIcon.tsx"
 import RSSIcon from "./icons/RSSIcon.tsx"
+import EpisodesFMIcon from "./icons/EpisodesFMIcon.tsx"
 
 interface FeedProps {
   lookupResult: LookupResult
@@ -118,6 +119,22 @@ export default function Feed(props: FeedProps): JSX.Element {
                   title="Podcast Index ID"
                 >
                   <PodcastIndexIcon />
+                </a>
+              </li>
+            )
+            : <></>}
+
+          {
+            lookupResult.feed.itunesId && lookupResult.feed.itunesId !== ""
+            ? (
+              <li>
+                <a
+                  href={`https://episodes.fm/${lookupResult.feed.itunesId}`}
+                  target="_blank"
+                  rel="nofollow"
+                  title="Follow in your Podcast App"
+                >
+                  <EpisodesFMIcon />
                 </a>
               </li>
             )

@@ -166,6 +166,12 @@ export default function TermsPage(props: PageProps): JSX.Element {
         {" and "}
         <a href="https://heroicons.com/" target="_blank" rel="nofollow">Heroicons</a>.
       </p>
+
+      <p>
+        {"Icon for "}
+        <a href="https://episodes.fm/" target="_blank" rel="nofollow">Episodes.fm</a>
+        {" from episodes.fm"}.
+      </p>
     </section>
   )
 }
