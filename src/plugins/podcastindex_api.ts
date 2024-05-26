@@ -82,6 +82,8 @@ function buildPIResponseFeed(feed: PIResponseFeed, originalFeed?: PIResponseFeed
     author: feed.author || originalFeed?.author,
     image: feed.image || originalFeed?.image,
     artwork: feed.artwork || originalFeed?.artwork,
+    generator: feed.generator || originalFeed?.generator,
+    itunesId: feed.itunesId || originalFeed?.itunesId,
     podcastGuid: feed.podcastGuid || originalFeed?.podcastGuid,
     fromIndex: id !== undefined && title !== undefined && url !== undefined,
     source: originalFeed?.source || feed.source || "search",
