@@ -24,6 +24,4 @@ config.plugins.push(freshSEOPlugin(manifest, {
   ]
 }))
 
-console.log(config)
-
 await start(manifest, config)
