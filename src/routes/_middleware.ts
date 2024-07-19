@@ -26,11 +26,11 @@ async function getServerUrlsUpdateState(ctx: FreshContext) {
 
 // noinspection JSUnusedGlobalSymbols
 export async function handler(req: Request, ctx: FreshContext) {
-  console.log(`Request from ${ctx.remoteAddr.hostname} to ${req.url}`)
-
   if (ctx.destination === "internal" || ctx.destination === "static") {
     return ctx.next()
   }
+
+  console.log(`Request to ${req.url}`, req.headers)
 
   const activeServer = getActiveServer(req)
   ctx.state.data = {

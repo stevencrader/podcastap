@@ -4,7 +4,6 @@ import { JSX } from "preact"
 import Settings from "../islands/Settings.tsx"
 import { StateData } from "../types/StateData.ts"
 import { getCanonical, getTitle } from "../utils/utils.ts"
-import { getRedirect } from "./feed/[id].tsx"
 
 // deno-lint-ignore require-await
 export default async function SettingsPage(req: Request, ctx: FreshContext): Promise<JSX.Element> {
@@ -13,7 +12,6 @@ export default async function SettingsPage(req: Request, ctx: FreshContext): Pro
   const canonical = getCanonical("settings")
   const pageTitle = getTitle(title)
   const description = "Configure user settings for PodcastAP"
-  const doRedirect = getRedirect(req)
   return (
     <section className="p-2 space-y-2 md:p-4 md:space-y-4">
       <Head>
@@ -27,7 +25,7 @@ export default async function SettingsPage(req: Request, ctx: FreshContext): Pro
         <meta name="twitter:description" content={description} />
       </Head>
       <h1>{title}</h1>
-      <Settings redirect={doRedirect} activeServer={activeServer} user={user} />
+      <Settings activeServer={activeServer} user={user} />
     </section>
   )
 }

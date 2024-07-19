@@ -24,22 +24,6 @@ const PAGES: LinkData[] = [
     href: "/search",
     icon: <MagnifyingGlassIcon />
   }
-  // {
-  //   title: "Feed",
-  //   href: "/feed/920666"
-  // },
-  // {
-  //   title: "Settings",
-  //   href: "/settings"
-  // },
-  // {
-  //   title: "About",
-  //   href: "/about"
-  // },
-  // {
-  //   title: "404 Test",
-  //   href: "/oops"
-  // }
 ]
 
 export default function NavigationBar(): JSX.Element {
