@@ -169,19 +169,6 @@ export default function Feed(props: FeedProps): JSX.Element {
                 )
                 : <></>
           }
-
-          {lookupResult.feed.id && lookupResult.feed.title
-            ? (
-              <li>
-                <a
-                  href={`/feed/${lookupResult.feed.id}?no_redirect=true`}
-                  title={`${lookupResult.feed.title} on PodcastAP`}
-                >
-                  <LinkIcon />
-                </a>
-              </li>
-            )
-            : <></>}
         </ul>
 
         {

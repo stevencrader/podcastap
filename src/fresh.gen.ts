@@ -13,7 +13,6 @@ import * as $api_mastodon_unfollow from "./routes/api/mastodon/unfollow.tsx"
 import * as $auth_callback from "./routes/auth/callback.ts"
 import * as $auth_signin from "./routes/auth/signin.ts"
 import * as $auth_signout from "./routes/auth/signout.ts"
-import * as $feed_id_ from "./routes/feed/[id].tsx"
 import * as $feeds from "./routes/feeds.tsx"
 import * as $index from "./routes/index.tsx"
 import * as $legal from "./routes/legal.tsx"
@@ -30,7 +29,6 @@ import * as $Loading from "./islands/Loading.tsx"
 import * as $LocalServerHandler from "./islands/LocalServerHandler.tsx"
 import * as $OPMLParser from "./islands/OPMLParser.tsx"
 import * as $OPMLWriter from "./islands/OPMLWriter.tsx"
-import * as $RedirectManager from "./islands/RedirectManager.tsx"
 import * as $SelectServer from "./islands/SelectServer.tsx"
 import * as $Settings from "./islands/Settings.tsx"
 import * as $icons_CrossXIcon from "./islands/icons/CrossXIcon.tsx"
@@ -60,7 +58,6 @@ const manifest = {
     "./routes/auth/callback.ts": $auth_callback,
     "./routes/auth/signin.ts": $auth_signin,
     "./routes/auth/signout.ts": $auth_signout,
-    "./routes/feed/[id].tsx": $feed_id_,
     "./routes/feeds.tsx": $feeds,
     "./routes/index.tsx": $index,
     "./routes/legal.tsx": $legal,
@@ -79,7 +76,6 @@ const manifest = {
     "./islands/LocalServerHandler.tsx": $LocalServerHandler,
     "./islands/OPMLParser.tsx": $OPMLParser,
     "./islands/OPMLWriter.tsx": $OPMLWriter,
-    "./islands/RedirectManager.tsx": $RedirectManager,
     "./islands/SelectServer.tsx": $SelectServer,
     "./islands/Settings.tsx": $Settings,
     "./islands/icons/CrossXIcon.tsx": $icons_CrossXIcon,

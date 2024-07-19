@@ -6,16 +6,14 @@ import { PIResponseFeed } from "../types/podcastindex.ts"
 import { deleteFeeds, deleteServerUrls, getFeeds, getLocalServerUrls } from "../utils/localStorageManager.ts"
 import DarkModeControl from "./DarkModeControl.tsx"
 import OPMLWriter from "./OPMLWriter.tsx"
-import RedirectManager from "./RedirectManager.tsx"
 
 interface SettingsProps {
-  redirect: boolean
   activeServer?: string
   user?: Account
 }
 
 export default function Settings(props: SettingsProps): JSX.Element {
-  const { redirect, activeServer, user } = props
+  const { activeServer, user } = props
   const feeds: Signal<PIResponseFeed[]> = useSignal(getFeeds())
   const localServerUrls: Signal<string[]> = useSignal(getLocalServerUrls())
   return (
@@ -50,8 +48,6 @@ export default function Settings(props: SettingsProps): JSX.Element {
           Clear Server URLs
         </Button>
       </div>
-
-      <RedirectManager redirect={redirect} />
 
       <div className="flex flex-row gap-2 items-center p-2">
         <p>Set color scheme</p>
