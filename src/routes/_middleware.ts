@@ -30,7 +30,13 @@ export async function handler(req: Request, ctx: FreshContext) {
     return ctx.next()
   }
 
-  console.log(`Request to ${req.url}`, req.headers)
+  const headers: {[key: string]: string} = {}
+  req.headers.forEach((value, key) => {
+    if (key !== "cookie") {
+      headers[key] = value
+    }
+  })
+  console.log(`Request to ${req.url}`, headers)
 
   const activeServer = getActiveServer(req)
   ctx.state.data = {
