@@ -11,6 +11,7 @@ import LinkIcon from "./icons/LinkIcon.tsx"
 import PodcastIndexIcon from "./icons/PodcastIndexIcon.tsx"
 import RSSIcon from "./icons/RSSIcon.tsx"
 import EpisodesFMIcon from "./icons/EpisodesFMIcon.tsx"
+import { encodeURLSafeBase64 } from "../utils/utils.ts"
 
 interface FeedProps {
   lookupResult: LookupResult
@@ -125,11 +126,17 @@ export default function Feed(props: FeedProps): JSX.Element {
             : <></>}
 
           {
-            lookupResult.feed.itunesId && lookupResult.feed.itunesId !== ""
+            (lookupResult.feed.itunesId && lookupResult.feed.itunesId !== "") ||
+              lookupResult.feed.url && lookupResult.feed.url !== ""
             ? (
               <li>
                 <a
-                  href={`https://episodes.fm/${lookupResult.feed.itunesId}`}
+                  href={`https://episodes.fm/${
+                    lookupResult.feed.itunesId
+                      ? lookupResult.feed.itunesId
+                      : encodeURLSafeBase64(lookupResult.feed.url)
+                  }
+                `}
                   target="_blank"
                   rel="nofollow"
                   title="Follow in your Podcast App"
