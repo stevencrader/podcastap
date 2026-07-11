@@ -38,5 +38,5 @@
       "deno.unstable"
     ]
   },
-  "nodeModulesDir": true
+  "nodeModulesDir": "auto"
 }
