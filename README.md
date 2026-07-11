@@ -18,11 +18,11 @@ This project targets the [new Deno Deploy](https://console.deno.com) platform (D
 
 1. Create an organization and app at [console.deno.com](https://console.deno.com)
 2. Link this GitHub repository
-3. Set the app directory to `src`
+3. Leave the app directory empty (repo root) — `deno.json` already sets the build command and `src/main.ts` entrypoint
 4. Provision a Deno KV database and assign it to the app
 5. Copy environment variables into Production / Preview / Build contexts as needed
 
-Build and runtime settings are defined in `src/deno.json` under the `deploy` key.
+If the preview shows “Finish setting up Fresh”, the Tailwind AOT build did not run. Confirm the build logs include `deno task build` and that `_fresh/snapshot.json` is produced.
 
 ## Option B: GitHub Actions
 

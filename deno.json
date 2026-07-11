@@ -5,6 +5,14 @@
     "build": "deno task --cwd=src build",
     "preview": "deno task --cwd=src preview"
   },
+  "deploy": {
+    "build": "deno task build",
+    "runtime": {
+      "type": "dynamic",
+      "entrypoint": "./src/main.ts",
+      "cwd": "./src"
+    }
+  },
   "exclude": [
     "**/_fresh/*",
     "**/node_modules/*"
