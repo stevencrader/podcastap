@@ -9,7 +9,7 @@
     "build": "deno task build",
     "runtime": {
       "type": "dynamic",
-      "entrypoint": "./src/main.ts",
+      "entrypoint": "./main.ts",
       "cwd": "./src"
     }
   },
