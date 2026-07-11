@@ -36,6 +36,8 @@
     "**/node_modules/*"
   ],
   "imports": {
+    "https://deno.land/x/hackle/init.ts": "./shims/hackle_init.ts",
+    "https://deno.land/x/hackle@1.1.1/init.ts": "./shims/hackle_init.ts",
     "$deno_kv_oauth/": "https://raw.githubusercontent.com/denoland/deno_kv_oauth/49bfffb4e7915ac12f5d67b01b8f2f93bcfdede2/",
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
     "$fresh_seo/": "https://deno.land/x/fresh_seo@1.0.1/",
